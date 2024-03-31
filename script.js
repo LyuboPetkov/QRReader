@@ -1,47 +1,44 @@
 let scannedData = '';
 
 function onScanSuccess(decodedText, decodedResult) {
-    // Handle on success condition with the decoded text or result.
     console.log(`Code scanned = ${decodedText}`, decodedResult);
     scannedData = decodedText;
-    // Optionally, stop scanning.
     html5QrCode.stop().then(ignore => {
-      // QR Code scanning is stopped.
       console.log("QR Scanning stopped.");
     }).catch(err => {
-      // Stop failed, handle it.
+      console.error("Stopping QR Scanning failed.", err);
     });
 }
 
 function onScanError(errorMessage) {
-    // handle on error condition, with error message
     console.error(errorMessage);
 }
 
-// This method will trigger user permissions
+// Modified to prefer the rear camera
 Html5Qrcode.getCameras().then(devices => {
-    /**
-     * devices would be an array of objects of type:
-     * { id: "id", label: "label" }
-     */
     if (devices && devices.length) {
-        var cameraId = devices[0].id;
-        // .. use this to start scanning.
+        let cameraId = devices[0].id; // Default to the first camera (usually front camera on smartphones)
+        // Look for a rear-facing camera
+        const rearCamera = devices.find(device => device.label.toLowerCase().includes('back'));
+        if (rearCamera) {
+            cameraId = rearCamera.id; // Use the rear camera if found
+        }
+
         const html5QrCode = new Html5Qrcode("reader");
         html5QrCode.start(
           cameraId, 
           {
-            fps: 10,    // Optional frame per seconds for qr code scanning
-            qrbox: 250  // Optional if you want bounded box UI
+            fps: 10,
+            qrbox: 250
           },
           onScanSuccess,
           onScanError)
         .catch(err => {
-          // Start failed, handle it.
+          console.error("Unable to start QR scanning", err);
         });
     }
 }).catch(err => {
-    // handle err
+    console.error("Failed to get camera devices", err);
 });
 
 function decryptData() {
