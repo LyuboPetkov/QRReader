@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Scanner and Decryptor</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+<div id="reader" style="width: 500px; height: 500px;"></div>
+<input type="text" id="decryption-key" placeholder="Enter decryption key" />
+<button onclick="decryptData()">Decrypt Data</button>
+<div id="data"></div>
+<script src="script.js"></script>
+</body>
+</html>
