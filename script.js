@@ -29,7 +29,7 @@ Html5Qrcode.getCameras().then(devices => {
           cameraId, 
           {
             fps: 10,
-            qrbox: 150
+            qrbox: 100
           },
           onScanSuccess,
           onScanError)
